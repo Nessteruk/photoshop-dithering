@@ -27,6 +27,16 @@ Photoshop 26.0 and later (the interface uses Spectrum Web Components, which need
 
 Download `Dithering-<version>.ccx` from the [latest release](https://github.com/Nessteruk/photoshop-dithering/releases/latest) and double-click it: Creative Cloud installs it in Photoshop 26 or later. Then open **Plugins > Dithering**. The plugin is distributed outside the Adobe Marketplace, so Photoshop may show an unverified-plugin notice.
 
+### Windows on ARM (unofficial)
+
+On Windows on ARM (Surface Pro with a Snapdragon chip), Creative Cloud cannot install a `.ccx`, so double-clicking it does nothing. The plugin itself is plain JavaScript and has nothing specific to the processor. As a workaround, close Photoshop, download `Dithering-<version>.ccx` and [`tools/install-manual.ps1`](tools/install-manual.ps1) into the same folder, and run in PowerShell:
+
+```
+powershell -ExecutionPolicy Bypass -File .\install-manual.ps1 -Package .\Dithering-<version>.ccx
+```
+
+It copies the plugin to `%APPDATA%\Adobe\UXP\Plugins\External` and registers it in `PluginsInfo\v1\PS.json`, which is what Creative Cloud does on x86 machines. Restart Photoshop and open **Plugins > Dithering**. Use `-Uninstall` to remove it. This is not supported by Adobe: if Photoshop on ARM hides the Plugins menu, the plugin cannot be shown.
+
 ## Install for development
 
 1. Install **UXP Developer Tool** from the Creative Cloud app, and Node.js 22 or later.
