@@ -35,7 +35,7 @@ Sur Windows sur ARM (Surface Pro avec une puce Snapdragon), Creative Cloud ne sa
 powershell -ExecutionPolicy Bypass -File .\install-manual.ps1 -Package .\Dithering-<version>.ccx
 ```
 
-Le script copie le plugin dans `%APPDATA%\Adobe\UXP\Plugins\External` et l'enregistre dans `PluginsInfo\v1\PS.json`, ce que fait Creative Cloud sur les machines x86. Relance Photoshop et ouvre **Modules externes > Dithering**. `-Uninstall` le retire. Adobe ne prend pas en charge ce contournement : si Photoshop sur ARM masque le menu des plugins, le plugin ne peut pas s'afficher.
+Le script copie le plugin dans `%APPDATA%\Adobe\UXP\Plugins\External` et l'enregistre dans `PluginsInfo\v1\PS.json`, ce que fait Creative Cloud sur les machines x86. Relance Photoshop, puis **active le mode développeur** dans **Édition > Préférences > Modules externes** (« Activer le mode développeur ») et relance Photoshop une seconde fois : sans cela, le menu **Modules externes** ne s'affiche pas sur ARM, donc la fenêtre Dithering ne peut pas s'ouvrir. Ouvre ensuite **Modules externes > Dithering**. `-Uninstall` le retire. Adobe ne prend pas en charge ce contournement.
 
 ## Installer pour le développement
 
