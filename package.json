@@ -1,0 +1,30 @@
+{
+  "name": "photoshop-dithering",
+  "version": "1.0.0",
+  "description": "Photoshop UXP panel that applies a dithering effect to a layer without flattening or resizing the document.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "package": "npm run build && node tools/make-ccx.js",
+    "test": "node --test",
+    "icons": "node tools/make-icons.js",
+    "blue-noise": "node tools/make-blue-noise.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@swc-uxp-wrappers/action-button": "2.0.0",
+    "@swc-uxp-wrappers/action-group": "2.0.0",
+    "@swc-uxp-wrappers/checkbox": "2.0.0",
+    "@swc-uxp-wrappers/divider": "2.0.0",
+    "@swc-uxp-wrappers/textfield": "2.0.0",
+    "@swc-uxp-wrappers/utils": "2.0.1"
+  },
+  "devDependencies": {
+    "webpack": "5.112.2",
+    "webpack-cli": "7.3.1"
+  }
+}

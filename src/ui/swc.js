@@ -1,0 +1,11 @@
+require("@swc-uxp-internal/theme/sp-theme.js");
+require("@swc-uxp-internal/theme/theme-darkest.js");
+require("@swc-uxp-internal/theme/theme-dark.js");
+require("@swc-uxp-internal/theme/theme-light.js");
+require("@swc-uxp-internal/theme/theme-lightest.js");
+require("@swc-uxp-internal/theme/scale-medium.js");
+require("@swc-uxp-wrappers/action-button/sp-action-button.js");
+require("@swc-uxp-wrappers/action-group/sp-action-group.js");
+require("@swc-uxp-wrappers/checkbox/sp-checkbox.js");
+require("@swc-uxp-wrappers/textfield/sp-textfield.js");
+require("@swc-uxp-wrappers/divider/sp-divider.js");
