@@ -195,6 +195,10 @@ sp-theme {
   width: var(--value-field-width);
 }
 
+sp-checkbox {
+  display: flex;
+}
+
 .text-row {
   margin-bottom: var(--space-m);
 }
