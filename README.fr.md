@@ -6,7 +6,7 @@ Un panneau Photoshop qui applique un effet de dithering directement sur un calqu
 
 ## Statut
 
-Version 1.0.0. *Ajouter un calque Dithering* crée un calque qui trame tout ce qui est en dessous (ou seulement le calque auquel il est écrêté). Les réglages le mettent à jour en direct, et il peut se mettre à jour seul quand les calques en dessous changent. Un calque Dithering peut être dupliqué, copié dans un autre document ou converti en calque normal, et garde ses réglages dans le document. Il a été peu testé : signale tout problème dans une issue.
+Version 1.0.1. *Ajouter un calque Dithering* crée un calque qui trame tout ce qui est en dessous (ou seulement le calque auquel il est écrêté). Les réglages le mettent à jour en direct, et il peut se mettre à jour seul quand les calques en dessous changent. Un calque Dithering peut être dupliqué, copié dans un autre document ou converti en calque normal, et garde ses réglages dans le document. Il a été peu testé : signale tout problème dans une issue.
 
 Limites connues : les documents 32 bits ne sont pas pris en charge, et un calque Dithering garde ses réglages dans le document, donc reste modifiable après la fermeture du fichier.
 

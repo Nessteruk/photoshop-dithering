@@ -1,6 +1,6 @@
 {
   "name": "photoshop-dithering",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Photoshop UXP panel that applies a dithering effect to a layer without flattening or resizing the document.",
   "private": true,
   "license": "MIT",

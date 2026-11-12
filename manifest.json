@@ -2,7 +2,7 @@
   "manifestVersion": 5,
   "id": "io.github.nessteruk.dithering",
   "name": "Dithering",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.html",
   "featureFlags": {
     "enableSWCSupport": true

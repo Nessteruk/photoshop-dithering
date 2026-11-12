@@ -6,7 +6,7 @@ A Photoshop panel that applies a dithering effect directly to a layer, with no n
 
 ## Status
 
-Version 1.0.0. *Add a Dithering layer* creates a layer that dithers everything below it (or only the layer it is clipped to). The settings update it live, and it can update itself when the layers below change. Dithering layers can be duplicated, copied into another document, converted to normal layers, and keep their settings in the document. It has not been tested on many documents yet, so please report any problem as an issue.
+Version 1.0.1. *Add a Dithering layer* creates a layer that dithers everything below it (or only the layer it is clipped to). The settings update it live, and it can update itself when the layers below change. Dithering layers can be duplicated, copied into another document, converted to normal layers, and keep their settings in the document. It has not been tested on many documents yet, so please report any problem as an issue.
 
 Known limits: 32-bit documents are not supported, and a Dithering layer keeps its settings in the document, so it stays editable after closing the file.
 
