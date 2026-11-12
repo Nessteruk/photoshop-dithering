@@ -70,10 +70,11 @@ test("every parameter of the schema builds a control that can display its settin
 test("a checkbox reports the new value and can be set", () => {
   const values = [];
   const box = components.checkbox("Label", (checked) => values.push(checked));
-  assert.equal(box.element.attributes.size, "s");
+  assert.equal(box.input.attributes.size, "s");
+  assert.equal(box.element.children[0], box.input);
   box.set(true);
   assert.equal(box.get(), true);
-  box.element.fire("change", { target: { checked: false } });
+  box.input.fire("change", { target: { checked: false } });
   assert.deepEqual(values, [false]);
 });
 

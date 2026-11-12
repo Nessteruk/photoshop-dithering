@@ -231,11 +231,10 @@ async function renderTarget(doc, resultLayer, settings) {
     if (!base) fail("base-missing");
     return withVisibility([{ layer: base, visible: true }], () => renderPixels(doc, base, settings));
   }
-  const above = tree.layersAbove(doc.layers, resultLayer.id) || [];
-  const changes = above.concat(resultLayer).map((layer) => ({ layer, visible: false }));
-  if (settings.includeHidden) {
-    (tree.layersBelow(doc.layers, resultLayer.id) || []).forEach((layer) => changes.push({ layer, visible: true }));
-  }
+  const scope = tree.scopeOf(doc.layers, resultLayer.id) || { outside: [], ancestors: [], below: [] };
+  const changes = scope.outside.concat(resultLayer).map((layer) => ({ layer, visible: false }));
+  scope.ancestors.forEach((layer) => changes.push({ layer, visible: true }));
+  if (settings.includeHidden) scope.below.forEach((layer) => changes.push({ layer, visible: true }));
   return withVisibility(changes, () => renderPixels(doc, null, settings));
 }
 
@@ -331,7 +330,7 @@ async function refreshDocument(documentId, newLayers) {
   const adopted = Object.keys(adoptions).map(Number);
   const targets = entries.map((entry) => entry.id).reverse().filter((id) => {
     const settings = adoptions[id] ? (renderNow[id] ? adoptions[id] : null) : links[id];
-    return Boolean(settings && settings.autoUpdate);
+    return Boolean(settings && settings.autoUpdate && tree.isShown(doc.layers, id));
   });
   if (!adopted.length && !targets.length) return idle;
   return inModal(doc.id, "Dithering", async () => {

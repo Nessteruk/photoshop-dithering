@@ -37,24 +37,26 @@ function flatten(layers) {
   return result;
 }
 
-function layersAbove(layers, id) {
+function scopeOf(layers, id) {
   const list = toArray(layers);
   for (let i = 0; i < list.length; i++) {
-    if (list[i].id === id) return list.slice(0, i);
-    const inner = layersAbove(childrenOf(list[i]), id);
-    if (inner) return list.slice(0, i).concat(inner);
+    if (list[i].id === id) return { outside: list.slice(0, i), ancestors: [], below: flatten(list.slice(i + 1)) };
+    const inner = scopeOf(childrenOf(list[i]), id);
+    if (inner) {
+      return {
+        outside: inner.outside.concat(list.filter((layer, index) => index !== i)),
+        ancestors: [list[i]].concat(inner.ancestors),
+        below: inner.below
+      };
+    }
   }
   return null;
 }
 
-function layersBelow(layers, id) {
-  const list = toArray(layers);
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].id === id) return flatten(list.slice(i + 1));
-    const inner = layersBelow(childrenOf(list[i]), id);
-    if (inner) return inner.concat(flatten(list.slice(i + 1)));
-  }
-  return null;
+function isShown(layers, id) {
+  const scope = scopeOf(layers, id);
+  const layer = findLayer(layers, id);
+  return Boolean(scope && layer && layer.visible && scope.ancestors.every((ancestor) => ancestor.visible));
 }
 
 function snapshot(layers) {
@@ -103,4 +105,4 @@ function nextLayerName(prefix, layers) {
   return prefix + " " + number;
 }
 
-module.exports = { findLayer, siblingsOf, layersAbove, layersBelow, snapshot, findCopies, nextLayerName };
+module.exports = { findLayer, siblingsOf, scopeOf, isShown, snapshot, findCopies, nextLayerName };

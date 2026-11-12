@@ -24,16 +24,19 @@ function button(label, onActivate) {
 }
 
 function checkbox(label, onChange) {
-  const element = sized(create("sp-checkbox", "", label));
-  element.addEventListener("change", (event) => {
+  const input = sized(create("sp-checkbox", "", label));
+  const element = create("div");
+  element.appendChild(input);
+  input.addEventListener("change", (event) => {
     if (onChange) onChange(Boolean(event.target.checked));
   });
   return {
     element,
+    input,
     set(value) {
-      element.checked = Boolean(value);
+      input.checked = Boolean(value);
     },
-    get: () => Boolean(element.checked)
+    get: () => Boolean(input.checked)
   };
 }
 

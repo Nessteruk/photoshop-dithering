@@ -30,26 +30,45 @@ test("siblings are the layers of the same level", () => {
   assert.equal(tree.siblingsOf(document(), 99), null);
 });
 
-test("layers above a layer at the top level are the ones before it", () => {
-  assert.deepEqual(ids(tree.layersAbove(document(), 7)), [1, 2]);
-  assert.deepEqual(ids(tree.layersAbove(document(), 1)), []);
+test("the scope of a top-level layer is what is above it (outside) and everything below it", () => {
+  const scope = tree.scopeOf(document(), 7);
+  assert.deepEqual(ids(scope.outside), [1, 2]);
+  assert.deepEqual(ids(scope.ancestors), []);
+  assert.deepEqual(ids(scope.below), [8]);
+  assert.deepEqual(ids(tree.scopeOf(document(), 1).outside), []);
+  assert.deepEqual(ids(tree.scopeOf(document(), 1).below).sort(), [2, 3, 4, 5, 6, 7, 8]);
+  assert.equal(tree.scopeOf(document(), 99), null);
 });
 
-test("layers above a layer in a group include the layers above the group but not the group itself", () => {
-  assert.deepEqual(ids(tree.layersAbove(document(), 4)), [1, 3]);
-  assert.deepEqual(ids(tree.layersAbove(document(), 6)), [1, 3, 4]);
-  assert.equal(tree.layersAbove(document(), 99), null);
+test("the scope of a layer in a group is limited to that group", () => {
+  const scope = tree.scopeOf(document(), 3);
+  assert.deepEqual(ids(scope.ancestors), [2]);
+  assert.deepEqual(ids(scope.below).sort(), [4, 5, 6]);
+  assert.deepEqual(ids(scope.outside).sort(), [1, 7, 8]);
 });
 
-test("layers below a layer include everything under it, groups and their children", () => {
-  assert.deepEqual(ids(tree.layersBelow(document(), 1)).sort(), [2, 3, 4, 5, 6, 7, 8]);
-  assert.deepEqual(ids(tree.layersBelow(document(), 7)), [8]);
-  assert.deepEqual(ids(tree.layersBelow(document(), 8)), []);
+test("the scope of a layer in a nested group keeps every parent and leaves the other levels out", () => {
+  const scope = tree.scopeOf(document(), 6);
+  assert.deepEqual(ids(scope.ancestors), [2, 5]);
+  assert.deepEqual(ids(scope.below), []);
+  assert.deepEqual(ids(scope.outside).sort(), [1, 3, 4, 7, 8]);
 });
 
-test("layers below a layer in a group also include what is below the group", () => {
-  assert.deepEqual(ids(tree.layersBelow(document(), 3)).sort(), [4, 5, 6, 7, 8]);
-  assert.deepEqual(ids(tree.layersBelow(document(), 6)).sort(), [7, 8]);
+test("a layer is shown only when it and all its groups are visible", () => {
+  const shown = () => [
+    { id: 1, visible: true },
+    { id: 2, visible: true, layers: [{ id: 3, visible: true }, { id: 4, visible: false }] }
+  ];
+  assert.equal(tree.isShown(shown(), 1), true);
+  assert.equal(tree.isShown(shown(), 3), true);
+  assert.equal(tree.isShown(shown(), 4), false);
+  const hiddenGroup = shown();
+  hiddenGroup[1].visible = false;
+  assert.equal(tree.isShown(hiddenGroup, 3), false);
+  const hiddenLayer = shown();
+  hiddenLayer[0].visible = false;
+  assert.equal(tree.isShown(hiddenLayer, 1), false);
+  assert.equal(tree.isShown(shown(), 99), false);
 });
 
 test("a new normal layer takes the smallest free number, like Photoshop", () => {
@@ -69,7 +88,7 @@ test("names inside groups are taken into account", () => {
 test("array-like collections from Photoshop work like arrays", () => {
   const collection = { length: 2, 0: layer(1, "A"), 1: layer(2, "B", { length: 1, 0: layer(3, "C") }) };
   assert.equal(tree.findLayer(collection, 3).name, "C");
-  assert.deepEqual(ids(tree.layersBelow(collection, 1)), [2, 3]);
+  assert.deepEqual(ids(tree.scopeOf(collection, 1).below), [2, 3]);
 });
 
 test("a snapshot lists every layer once, from the top of the stack down, children included", () => {
